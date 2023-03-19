@@ -1,10 +1,16 @@
 // src/main.rs
 
 #[path = "modules/hasher.rs"] mod hasher;
+#[path = "modules/verifier.rs"] mod verifier;
+
 
 fn main() {
     //foreach u8 in [u8] convert to char
-    let hash = hasher::keccak256("Hello, world!");
+    let hash = hasher::keccak256(b"Hello, world!");
 
-    println!("{:?}", hash);
+    let array = verifier::new_u256();
+
+    let (seed, seed2) = verifier::generate_new_seed(array);
+
+    println!("{:?}", hasher::hash_to_string(&seed));
 }
