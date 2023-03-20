@@ -10,7 +10,8 @@ fn main() {
 
     let array = verifier::new_u256();
 
-    let (seed, seed2) = verifier::generate_new_seed(array);
+    let seed = verifier::generate_new_seed(array);
 
-    println!("{:?}", hasher::hash_to_string(&seed));
+    println!("{:?}", hasher::hash_to_string(&seed.0));
+    println!("{:?}", hasher::hash_to_string(&seed.1));
 }
