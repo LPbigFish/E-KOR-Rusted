@@ -2,6 +2,7 @@
 
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
+#[path = "modules/ecdsa.rs"] mod ecdsa;
 
 
 fn main() {
@@ -14,4 +15,11 @@ fn main() {
 
     println!("{:?}", hasher::hash_to_string(&seed.0));
     println!("{:?}", hasher::hash_to_string(&seed.1));
+    println!("{:?}", hasher::hash_to_string(&hash));
+    println!("{:?}", hasher::hash_to_string(&ecdsa::get_n()));
+    println!("{:?}\n{:?}", hasher::hash_to_string(&ecdsa::get_g().0), hasher::hash_to_string(&ecdsa::get_g().1));
+
+    let result = ecdsa::multiply(&ecdsa::get_g().0, &array);
+
+    println!("{:?}", hasher::hash_to_string(&result));
 }

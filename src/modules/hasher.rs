@@ -1,12 +1,16 @@
 // src/modules/hasher.rs
-use tiny_keccak::{Keccak, Hasher};
+use sha3::{Digest, Keccak256};
 
 
 pub fn keccak256(input: &[u8]) -> [u8; 32] {
-    let mut hasher = Keccak::v256();
+    let mut hasher = Keccak256::new();
+
     let mut output = [0u8; 32];
+
     hasher.update(input);
-    hasher.finalize(&mut output);
+
+    output.copy_from_slice(hasher.finalize().as_slice());
+
     output
 }
 

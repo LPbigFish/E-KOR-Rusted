@@ -4,7 +4,8 @@
 
 use hmac::{Hmac, Mac};
 use rand_core::RngCore;
-use sha2::Sha512;
+use sha3::Keccak512;
+
 
 pub fn new_u256() -> [u8; 32] {
     let mut u256 = [0u8; 32];
@@ -14,7 +15,7 @@ pub fn new_u256() -> [u8; 32] {
 }
 
 pub fn generate_new_seed(seed: [u8; 32]) -> ([u8; 32], [u8; 32]) {
-    type Hmac256 = Hmac::<Sha512>;
+    type Hmac256 = Hmac::<Keccak512>;
 
     let mut hmac = Hmac256::new_from_slice(&seed).unwrap();
     hmac.update(b"e-kor");
