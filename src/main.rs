@@ -1,5 +1,7 @@
 // src/main.rs
 
+use num::BigInt;
+
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
 #[path = "modules/ecdsa.rs"] mod ecdsa;
@@ -16,10 +18,14 @@ fn main() {
     println!("{:?}", hasher::hash_to_string(&seed.0));
     println!("{:?}", hasher::hash_to_string(&seed.1));
     println!("{:?}", hasher::hash_to_string(&hash));
-    println!("{:?}", hasher::hash_to_string(&ecdsa::get_n()));
-    println!("{:?}\n{:?}", hasher::hash_to_string(&ecdsa::get_g().0), hasher::hash_to_string(&ecdsa::get_g().1));
+    println!("{:?}", ecdsa::get_n());
+    println!("{:?}\n{:?}", ecdsa::get_g().x, ecdsa::get_g().y);
 
-    let result = ecdsa::multiply(&ecdsa::get_g().0, &array);
+    let result = ecdsa::inverse(BigInt::from(2));
 
-    println!("{:?}", hasher::hash_to_string(&result));
+    println!("{:?}", result);
+
+    println!("{:?}", ecdsa::multiply(bigint!("2")));
+
+    print!("{:?}", ecdsa::get_p());
 }
