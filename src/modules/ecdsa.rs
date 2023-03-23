@@ -7,6 +7,20 @@ pub struct Point {
     pub y: BigInt
 }
 
+#[macro_export]
+macro_rules! bigint {
+    ($x:expr) => {
+        BigInt::parse_bytes($x.as_bytes(), 16).unwrap()
+    };
+}
+
+ #[macro_export]
+ macro_rules! bigint_array {
+        ($x:expr) => {
+            BigInt::from_bytes_be(num::bigint::Sign::Plus, $x)
+        };
+ }
+
 impl Point {
     pub fn clone(&self) -> Point {
         Point {
@@ -54,44 +68,40 @@ pub fn to_slice(x: &BigInt) -> [u8; 32] {
     array
 }
 
-pub fn inverse(a: BigInt) -> BigInt {
-    let mut m = get_p();
-    let m_origin = get_p();
-    let mut a = a;
-    if a < BigInt::from(0) {
-        a = a % &m;
+pub fn inverse(a: BigInt) -> Option<BigInt> {
+    let mut a = a % get_p();
+    let mut b = get_p();
+    let mut x = bigint!("0");
+    let mut y = bigint!("1");
+    let mut last_x = bigint!("1");
+    let mut last_y = bigint!("0");
+    while b != bigint!("0") {
+        let q = &a / &b;
+        let temp = b.clone();
+        b = &a % &b;
+        a = temp.to_owned();
+        let temp = x.clone();
+        x = last_x - &q * x;
+        last_x = temp;
+        let temp = y.clone();
+        y = last_y - q * &y;
+        last_y = temp;
     }
-
-    let mut prevy = BigInt::from(0);
-    let mut y = BigInt::from(1);
-    let mut temp : BigInt;
-
-    while a > BigInt::from(1) {
-        let q = &get_p() / &a;
-        temp = y.clone();
-        y = &prevy - &q * y;
-        prevy = temp;
-
-        temp = a.clone();
-        a = m % &a;
-        m = temp;
-    }
-
-    y % m_origin
+    Some(last_x % get_p())
 }
 
-pub fn double(point : Point) -> Point {
-    let slope = (BigInt::from(3) * point.x.pow(2) + get_a()) * inverse(BigInt::from(2) * &point.y) % get_p();
+pub fn double(point : &Point) -> Point {
+    let slope = (BigInt::from(3) * point.x.pow(2) + get_a()) * inverse(BigInt::from(2) * &point.y).unwrap() % get_p();
 
     let x = (slope.pow(2) - BigInt::from(2) * &point.x) % get_p();
 
-    let y = (slope * (point.x - &x) - point.y) % get_p();
+    let y = (slope * (&point.x - &x) - &point.y) % get_p();
 
     Point { x , y }
 }
 
-pub fn add(point1 : Point, point2 : Point) -> Point {
-    let slope = (point2.y - &point1.y) * inverse(&point2.x - &point1.x) % get_p();
+pub fn add(point1 : &Point, point2 : &Point) -> Point {
+    let slope = (&point2.y - &point1.y) * inverse(&point2.x - &point1.x).unwrap() % get_p();
 
     let x = (slope.pow(2) - &point1.x - &point2.x) % get_p();
 
@@ -102,30 +112,20 @@ pub fn add(point1 : Point, point2 : Point) -> Point {
 
 pub fn multiply(k : BigInt) -> Point {
 
-    let mut k = k;
+    let k = k;
     let point = get_g();
 
     let mut current = point.clone();
 
     //convert string to binary
-    let binary = format!("{:b}", k);
+    let binary = k.to_str_radix(2);
 
     for bit in binary.chars().skip(1) {
-        current = double(current);
+        current = double(&current);
         if bit == '1' {
-            current = add(current, point.clone());
+            current = add(&current, &point);
         }
-    }
+    }   
 
-current
-}
-
-
-
-
-#[macro_export]
-macro_rules! bigint {
-    ($x:expr) => {
-        BigInt::parse_bytes($x.as_bytes(), 16).unwrap()
-    };
+    Point {x: current.x.clone(), y: current.y.clone()}
 }

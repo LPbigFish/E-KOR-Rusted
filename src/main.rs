@@ -21,11 +21,9 @@ fn main() {
     println!("{:?}", ecdsa::get_n());
     println!("{:?}\n{:?}", ecdsa::get_g().x, ecdsa::get_g().y);
 
-    let result = ecdsa::inverse(BigInt::from(2));
+    let result = ecdsa::inverse(bigint_array!(&seed.0));
 
-    println!("{:?}", result);
+    println!("{:?}", result.unwrap());
 
-    println!("{:?}", ecdsa::multiply(bigint!("2")));
-
-    print!("{:?}", ecdsa::get_p());
+    println!("{:?}", ecdsa::multiply(bigint_array!(&seed.0)));
 }
