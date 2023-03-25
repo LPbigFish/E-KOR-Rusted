@@ -3,19 +3,26 @@
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
 #[path = "modules/ecdsa.rs"] mod ecdsa;
+#[path = "modules/structures.rs"] mod structures;
 
 
 fn main() {
-    //foreach u8 in [u8] convert to char
-    let hash = hasher::keccak256(b"Hello, world!");
+    
+    let private_key = ecdsa::generate_private_key();
 
-    let array = verifier::new_u256();
+    println!("{:?}", private_key);
 
-    let seed = verifier::generate_new_seed(array);
+    let public_key = ecdsa::generate_public_key(private_key.as_slice());
 
-    println!("{:?}", hasher::hash_to_string(&seed.0));
-    println!("{:?}", hasher::hash_to_string(&seed.1));
-    println!("{:?}", hasher::hash_to_string(&hash));
+    let hash = hasher::keccak256(b"Super secret message");
 
+    let fake_hash = hasher::keccak256(b"Super secret message 2");
 
+    let signature = ecdsa::sign_message(private_key.as_slice(), hash.as_slice());
+
+    let public_key_compressed = ecdsa::compress_pub(public_key);
+
+    println!("{:?}", hasher::hash_to_string(signature.as_ref()));
+
+    println!("{:?}", ecdsa::verify_signature(&public_key_compressed, &hash, &signature));
 }
