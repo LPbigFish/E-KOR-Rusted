@@ -10,6 +10,6 @@ This Project is just me playing with the Blockchain technology and Cryptography.
 
 ## Main Points
 
- - Proof-of-Work - I say that PoW is the only way how you can trust cryptocurrencies in general. It's the proof of the technology being backed up by the power it consumes during verification.
- - Rust - Rust being pretty new and low level makes it a great candidate for this Project. Supporting many features and being blazingly fast, sounds good to me.
- - Sha3 and Keccak - Once I was on a convention about quantum computers and hearing the power it has made me paranoid about Sha2, so I chose to use Keccak and Sha3 for the Project. 
+ - **Proof-of-Work** - I say that PoW is the only way how you can trust cryptocurrencies in general. It's the proof of the technology being backed up by the power it consumes during verification.
+ - **Rust** - Rust being pretty new and low level makes it a great candidate for this Project. Supporting many features and being blazingly fast, sounds good to me. And featuring many libraries like Yew and Rocket I can implement an interface for the Nodes.
+ - **Sha3** and Keccak - Once I was on a convention about quantum computers and hearing the power it has made me paranoid about Sha2, so I chose to use Keccak and Sha3 for the Project, because they are believed to be post-quant asymmetric algorithms.
