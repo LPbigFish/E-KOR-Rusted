@@ -1,5 +1,6 @@
 // src/main.rs
 
+
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
 #[path = "modules/ecdsa.rs"] mod ecdsa;
@@ -10,7 +11,7 @@ fn main() {
     
     let private_key = ecdsa::generate_private_key();
 
-    println!("{:?}", private_key);
+    println!("{:?}", hasher::hash_to_string(private_key.as_slice()));
 
     let public_key = ecdsa::generate_public_key(private_key.as_slice());
 
@@ -22,7 +23,7 @@ fn main() {
 
     let public_key_compressed = ecdsa::compress_pub(public_key);
 
-    println!("{:?}", hasher::hash_to_string(signature.as_ref()));
+    println!("{:?}", hasher::hash_to_string(public_key_compressed.as_slice()));
 
     println!("{:?}", ecdsa::verify_signature(&public_key_compressed, &hash, &signature));
 }
