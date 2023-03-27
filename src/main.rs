@@ -26,4 +26,8 @@ fn main() {
     println!("{:?}", hasher::hash_to_string(public_key_compressed.as_slice()));
 
     println!("{:?}", ecdsa::verify_signature(&public_key_compressed, &hash, &signature));
+
+    println!("{:?}", hasher::encode_to_58base(&public_key_compressed));
+
+    println!("{:?}", hasher::hash_to_string(&hasher::decode_from_58base(&hasher::encode_to_58base(&public_key_compressed))));
 }

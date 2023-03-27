@@ -22,9 +22,9 @@ pub fn new_u128() -> [u8; 16] {
 }
 
 pub fn generate_new_seed(seed: [u8; 32]) -> ([u8; 32], [u8; 32]) {
-    type Hmac256 = Hmac::<Keccak512>;
+    type Hmac512 = Hmac::<Keccak512>;
 
-    let mut hmac = Hmac256::new_from_slice(&seed).unwrap();
+    let mut hmac = Hmac512::new_from_slice(&seed).unwrap();
     hmac.update(b"e-kor");
 
     let result = hmac.finalize().into_bytes().to_vec();
