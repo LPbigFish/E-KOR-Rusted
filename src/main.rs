@@ -1,5 +1,7 @@
 // src/main.rs
 
+use structures::Wallet;
+
 
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
@@ -9,25 +11,7 @@
 
 fn main() {
     
-    let private_key = ecdsa::generate_private_key();
+    let wallet = Wallet::new();
 
-    println!("{:?}", hasher::hash_to_string(private_key.as_slice()));
-
-    let public_key = ecdsa::generate_public_key(private_key.as_slice());
-
-    let hash = hasher::keccak256(b"Super secret message");
-
-    let fake_hash = hasher::keccak256(b"Super secret message 2");
-
-    let signature = ecdsa::sign_message(private_key.as_slice(), hash.as_slice());
-
-    let public_key_compressed = ecdsa::compress_pub(public_key);
-
-    println!("{:?}", hasher::hash_to_string(public_key_compressed.as_slice()));
-
-    println!("{:?}", ecdsa::verify_signature(&public_key_compressed, &hash, &signature));
-
-    println!("{:?}", hasher::encode_to_58base(&public_key_compressed));
-
-    println!("{:?}", hasher::hash_to_string(&hasher::decode_from_58base(&hasher::encode_to_58base(&public_key_compressed))));
+    println!("{}", wallet.to_string());
 }
