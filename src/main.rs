@@ -1,7 +1,6 @@
 // src/main.rs
 
-use structures::Wallet;
-
+use crate::structures::wallet::Wallet;
 
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;

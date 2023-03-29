@@ -1,7 +1,7 @@
 // src/modules/ecdsa.rs
 
 use k256::{SecretKey, FieldBytes, elliptic_curve::sec1::{ToEncodedPoint, EncodedPoint}, Secp256k1, ecdsa::{signature::Signer, SigningKey, Signature, self, VerifyingKey}, schnorr::signature::{self, Verifier}, PublicKey};
-use crate::structures::Point;
+use crate::structures::wallet::Point;
 use crate::verifier;
 
 pub fn generate_private_key() -> [u8; 32] {
