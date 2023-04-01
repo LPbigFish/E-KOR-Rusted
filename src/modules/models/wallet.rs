@@ -40,7 +40,9 @@ impl ToString for Wallet {
         string.push_str(&hasher::hash_to_string(&self.private_key));
         string.push_str("\n");
         string.push_str("Public Key: \n");
+        string.push_str("X: ");
         string.push_str(&hasher::hash_to_string(&self.public_key.x));
+        string.push_str("\nY: ");
         string.push_str(&hasher::hash_to_string(&self.public_key.y));
         string.push_str("\n");
         string.push_str("Public Key Compressed: ");

@@ -46,6 +46,9 @@ impl Block {
     pub fn calculate_root(&self) -> [u8; 32] {
         let mut merkle_proofs: Vec<[u8;32]> = self.transactions.iter().map(|tx| tx.hash).collect();
         //hash 2 transactions at a time together
+        if merkle_proofs.len() == 0 {
+            return hasher::keccak256(b"empty");
+        }
         while merkle_proofs.len() > 1 {
             let len = merkle_proofs.len();
             for i in (0..merkle_proofs.len()).step_by(2) {
