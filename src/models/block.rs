@@ -19,6 +19,7 @@ pub struct Block {
     root: [u8; 32],
     previous_hash: [u8; 32],
     block_hash: [u8; 32],
+    nonce: u64,
 }
 
 impl Block {
@@ -35,10 +36,13 @@ impl Block {
             root: [0u8; 32],
             previous_hash,
             block_hash: [0u8; 32],
+            nonce: 0,
         };
 
         block.root = block.calculate_root();
-        block.block_hash = block.calculate_hash();
+        let temp = block.calculate_hash();
+        block.block_hash = temp.0;
+        block.nonce = temp.1;
 
         block
     }
@@ -71,7 +75,7 @@ impl Block {
         merkle_proofs[0]
     }
 
-    pub fn calculate_hash(&self) -> [u8; 32] {
+    pub fn calculate_hash(&self) -> ([u8; 32], u64) {
         let mut buffer = [0u8; 160];
         let target = [255u8;32];
         let mut handles = vec![];
@@ -104,7 +108,7 @@ impl Block {
                 proof.lock().unwrap()[nonce as usize] = candidate[0];
                 nonce += num_threads as u64;
             }
-            result
+            (result, nonce)
             });
 
             handles.push(thread_hendle);
@@ -117,6 +121,39 @@ impl Block {
             }
         }
 
-        [0u8; 32]
+        ([0u8; 32], 0)
+    }
+
+    pub fn new_existing(index: u32, timestamp: u64, transactions: Vec<Transaction>, proof: [u8; 28], difficulty: u32, previous_hash: [u8; 32], root: [u8; 32], block_hash: [u8; 32], nonce: u64) -> Self {
+        Block {
+            version: 1,
+            index,
+            timestamp,
+            transactions,
+            proof,
+            difficulty,
+            root,
+            previous_hash,
+            block_hash,
+            nonce
+        }
+    }
+}
+
+impl ToString for Block {
+    fn to_string(&self) -> String {
+        //convert everything in the block to hex
+        let mut block_string = String::new();
+        block_string.push_str(&hex::encode(&self.version.to_be_bytes()));
+        block_string.push_str(&hex::encode(&self.index.to_be_bytes())); 
+        block_string.push_str(&hex::encode(&self.timestamp.to_be_bytes()));
+        block_string.push_str(&hex::encode(&self.proof));
+        block_string.push_str(&hex::encode(&self.difficulty.to_be_bytes()));
+        block_string.push_str(&hex::encode(&self.previous_hash));
+        block_string.push_str(&hex::encode(&self.root));
+        block_string.push_str(&hex::encode(&self.block_hash));
+        block_string.push_str(&hex::encode(&self.nonce.to_be_bytes()));
+
+        block_string
     }
 }

@@ -1,6 +1,6 @@
 // src/main.rs
 
-use crate::structures::wallet::Wallet;
+use crate::structures::{wallet::Wallet, transaction::Transaction};
 
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
@@ -13,4 +13,8 @@ fn main() {
     let wallet = Wallet::new();
 
     println!("{}", wallet.to_string());
+
+    let tx = Transaction::new_empty();
+
+    println!("{}", tx.to_string());
 }
