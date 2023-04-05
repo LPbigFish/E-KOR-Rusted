@@ -5,7 +5,7 @@ use crate::structures::wallet::Wallet;
 #[path = "modules/hasher.rs"] mod hasher;
 #[path = "modules/verifier.rs"] mod verifier;
 #[path = "modules/ecdsa.rs"] mod ecdsa;
-#[path = "modules/structures.rs"] mod structures;
+#[path = "structures.rs"] mod structures;
 
 
 fn main() {
