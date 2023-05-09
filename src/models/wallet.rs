@@ -10,10 +10,11 @@ pub struct Point {
 
 #[derive(Debug, Clone)]
 pub struct Wallet {
-    pub private_key: [u8; 32],
-    pub public_key: Point,
-    pub public_key_compressed: [u8; 33],
-    pub address: String,
+    pub(crate) private_key: [u8; 32],
+    pub(crate) public_key: Point,
+    pub(crate) public_key_compressed: [u8; 33],
+    pub(crate) address: String,
+    
 }
 
 impl Wallet {

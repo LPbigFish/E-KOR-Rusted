@@ -6,3 +6,4 @@
 #[path="models/input.rs"] pub mod input;
 #[path="models/output.rs"] pub mod output;
 #[path="models/opcode.rs"] pub mod opcode;
+#[path="modules/scripter.rs"] pub mod scripter;
